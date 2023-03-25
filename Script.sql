@@ -208,8 +208,7 @@ select count(*) as cantidad_alumnos from persona  where tipo = 'alumno' and year
 /*3. Calcula cuántos profesores/as hay en cada departamento. El resultado sólo tiene que mostrar dos columnas, una con el nombre del departamento
 	y otra con el número de profesores/as que hay en este departamento. El resultado solo debe incluir los departamentos que tienen profesores/as 
 	asociados y deberá estar ordenado de mayor a menor por el número de profesores/as.*/
-    
-    
+ 
 /*4. Devuelve un listado con todos los departamentos y el número de profesores/as que hay en cada uno de ellos. Tenga en cuenta que pueden existir 
 	departamentos que no tienen profesores/as asociados. Estos departamentos también deben aparecer en el listado.*/
 /*5. Devuelve un listado con el nombre de todos los grados existentes en la base de datos y el número de asignaturas que tiene cada uno. Ten en cuenta
@@ -226,8 +225,8 @@ select count(*) as cantidad_alumnos from persona  where tipo = 'alumno' and year
 
 
 /*10. Devuelve todos los datos del alumno/a más joven.*/
-		select min(fecha_nacimiento) from persona where tipo = 'alumno';
-    
+		select * from persona where   tipo = 'alumno' and fecha_nacimiento = (select max(fecha_nacimiento) from persona);
+     
 /*11. Devuelve un listado con los profesores/as que tienen un departamento asociado y que no imparten ninguna asignatura.*/
 		select  prof.id_profesor, per.nombre, per.apellido1 from profesor prof
         inner join persona per on prof.id_profesor = per.id
