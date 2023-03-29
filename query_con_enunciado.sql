@@ -219,22 +219,42 @@ select count(*) as cantidad_alumnos from persona  where tipo = 'alumno' and year
 
 /*4. Devuelve un listado con todos los departamentos y el número de profesores/as que hay en cada uno de ellos. Tenga en cuenta que pueden existir 
 	departamentos que no tienen profesores/as asociados. Estos departamentos también deben aparecer en el listado.*/
+    
+    select dep.nombre as 'departamento', count(prof.id_profesor) as 'num profesores' from profesor prof right join departamento dep on prof.id_departamento = dep.id group by dep.nombre;
+    
 /*5. Devuelve un listado con el nombre de todos los grados existentes en la base de datos y el número de asignaturas que tiene cada uno. Ten en cuenta
 	que pueden existir grados que no tienen asignaturas asociadas. Estos grados también deben aparecer en el listado. El resultado deberá estar ordenado
 	de mayor a menor por el número de asignaturas.*/
+    
+    select gra.*, COUNT(asi.id) as 'asignatura' from grado gra left join asignatura asi on gra.id = asi.id_grado group by gra.id ORDER BY COUNT(asi.id) DESC;
+
+    
 /*6. Devuelve un listado con el nombre de todos los grados existentes en la base de datos y el número de asignaturas que tiene cada uno, de los grados 
 	que tengan más de 40 asignaturas asociadas.*/
+    
+    select gra.*, count(asi.id) as 'asignatura' from grado gra join asignatura asi ON gra.id = asi.id_grado group by gra.id having count(asi.id) > '40';
+
+    
 /*7. Devuelve un listado que muestre el nombre de los grados y la suma del número total de créditos que hay para cada tipo de asignatura. El resultado 
 	debe tener tres columnas: nombre del grado, tipo de asignatura y la suma de los créditos de todas las asignaturas que hay de este tipo.*/
+    
+    select gra.nombre, asi.tipo, sum(asi.creditos) as 'total créditos' from grado gra right join asignatura asi on gra.id = asi.id_grado group by gra.nombre, asi.tipo;
+
 /*8. Devuelve un listado que muestre cuántos alumnos se han matriculado de alguna asignatura en cada uno de los cursos escolares. El resultado deberá 
 	mostrar dos columnas, una columna con el año de inicio del curso escolar y otra con el número de alumnos matriculados.*/
+   
+   select ce.anyo_inicio, count(asma.id_alumno) as 'total alumnos' from alumno_se_matricula_asignatura asma right join curso_escolar ce on asma.id_curso_escolar = ce.id group by ce.id;
+
+    
 /*9. Devuelve un listado con el número de asignaturas que imparte cada profesor/a. El listado debe tener en cuenta a aquellos profesores/as que no imparten
 	ninguna asignatura. El resultado mostrará cinco columnas: id, nombre, primer apellido, segundo apellido y número de asignaturas. El resultado estará ordenado de mayor a menor por el número de asignaturas.*/
 
+select per.id, per.nombre, per.apellido1, per.apellido2, count(asi.id_profesor) as 'numero de asignaturas' from asignatura asi right join persona per on asi.id_profesor = per.id where per.tipo = 'profesor' group by per.id order by count(asi.id_profesor) desc;
 
 /*10. Devuelve todos los datos del alumno/a más joven.*/
 		select * from persona where   tipo = 'alumno' and fecha_nacimiento = (select max(fecha_nacimiento) from persona);
-     
+    
+    
 /*11. Devuelve un listado con los profesores/as que tienen un departamento asociado y que no imparten ninguna asignatura.*/
 		select  prof.id_profesor, per.nombre, per.apellido1 from profesor prof
         inner join persona per on prof.id_profesor = per.id
