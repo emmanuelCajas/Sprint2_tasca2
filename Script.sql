@@ -26,7 +26,8 @@ Select nombre,precio,(precio*1.07) from producto;
     
 /*8.Lista el nombre de todos los fabricantes en una columna, y en otra columna obtenga en mayúsculas los dos primeros caracteres del nombre del fabricante.*/
 	
-
+    select nombre, upper(left (nombre,2)) from fabricante;
+	
 /*9. Lista los nombres y los precios de todos los productos de la tabla producto, redondeando el valor del precio.*/
 	select nombre, (round(precio)) as precio_round from producto;
 
@@ -48,19 +49,20 @@ Select nombre,precio,(precio*1.07) from producto;
 /*15. Lista los nombres de los productos ordenados, en primer lugar, por el nombre de manera 
 	  ascendente y, en segundo lugar, por el precio de manera descendente.*/
       
+      select nombre, precio from producto order by nombre asc, precio desc;
       
 /*16. Devuelve una lista con las 5 primeras filas de la tabla.*/
 	select * from producto limit 0,5;
 
 /*17. Devuelve una lista con 2 filas a partir de la cuarta fila de la tabla. 
 La cuarta fila también debe incluirse en la respuesta.*/
-	select * from producto limit 3,2;
+	select * from fabricante limit 3,2;
 
 /*18. Lista el nombre y el precio del producto más barato. (Utiliza solamente las cláusulas ORDER BY y LIMIT).
 	  NOTA: Aquí no podría usar MIN(precio), necesitaría GROUP BY.*/
 	
     select nombre, precio from producto order by precio asc limit 0,1;
-      
+    
 /*19. Lista el nombre y el precio del producto más caro. (Utiliza solamente las cláusulas ORDER BY y LIMIT).
 	  NOTA: Aquí no podría usar MAX(precio), necesitaría GROUP BY. */
       
@@ -157,7 +159,7 @@ use universidad;
  del departamento, primer apellido, segundo apellido y nombre del profesor/a. El resultado estará ordenado alfabéticamente de menor
  a mayor por el nombre del departamento, apellidos y el nombre.*/
 	
-    select dep.nombre, per.apellido1, per.apellido2, per.nombre from profesor pro 
+    select dep.nombre as nombre_departamento, per.apellido1, per.apellido2, per.nombre from profesor pro 
     left join persona per on pro.id_profesor = per.id
     left join departamento dep on pro.id_departamento = dep.id;
         
@@ -181,7 +183,7 @@ use universidad;
     left join persona per on prof.id_profesor = per.id
     left join asignatura asi  on prof.id_profesor = asi.id_profesor
 	where asi.id_profesor is null;
-
+    
 /*5. Devuelve un listado con las asignaturas que no tienen un profesor/a asignado.*/
 
     select asi.* from asignatura asi 
@@ -190,8 +192,10 @@ use universidad;
     
 /*6. Devuelve un listado con todos los departamentos que no han impartido asignaturas en ningún curso escolar*/
 	    
-	select dep.nombre from profesor prof 
-    right join departamento dep on prof.id_departamento= dep.id;
+	select  dep.* from profesor prof 
+    right join departamento dep on prof.id_departamento = dep.id
+    left  join asignatura asi on prof.id_profesor = asi.id_profesor
+    where asi.id_profesor is null group by dep.id;
     
 /***********************/
 /* Consultas resumen:  */     
@@ -209,6 +213,10 @@ select count(*) as cantidad_alumnos from persona  where tipo = 'alumno' and year
 	y otra con el número de profesores/as que hay en este departamento. El resultado solo debe incluir los departamentos que tienen profesores/as 
 	asociados y deberá estar ordenado de mayor a menor por el número de profesores/as.*/
  
+	select dep.nombre as departamento, count(prof.id_profesor) as cantidad_profesores from profesor prof 
+    inner join departamento dep on prof.id_departamento = dep.id 
+    group by dep.id order by count(prof.id_profesor) desc;
+
 /*4. Devuelve un listado con todos los departamentos y el número de profesores/as que hay en cada uno de ellos. Tenga en cuenta que pueden existir 
 	departamentos que no tienen profesores/as asociados. Estos departamentos también deben aparecer en el listado.*/
 /*5. Devuelve un listado con el nombre de todos los grados existentes en la base de datos y el número de asignaturas que tiene cada uno. Ten en cuenta
