@@ -21,5 +21,11 @@ select nombre, codigo_fabricante from producto where codigo_fabricante=2;
 select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo;      
 select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo order by f.nombre asc;      
 select p.codigo, p.nombre, p.codigo_fabricante, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo;  
-    
-    
+select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where p.precio=(select min(precio) from producto) ;
+select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where p.precio=(select max(precio) from producto) ;
+select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre = 'Lenovo'; 
+select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre = 'Crucial' and p.precio > 200;
+select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre = 'Asus' or f.nombre = 'Hewlett-Packard' or f.nombre = 'Seagate';
+select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre in('Asus','Hewlett-Packard', 'Seagate') ;
+select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre like '%e';
+select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre like '%e%';

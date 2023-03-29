@@ -86,6 +86,30 @@ La cuarta fila también debe incluirse en la respuesta.*/
     
 	  select p.codigo, p.nombre, p.codigo_fabricante, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo;
 
+/*24. Devuelve el nombre del producto, su precio y el nombre de su fabricante, del producto más barato.*/
+	 select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where p.precio=(select min(precio) from producto) ;
+     
+/*25. Devuelve el nombre del producto, su precio y el nombre de su fabricante, del producto más caro.*/
+	select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where p.precio=(select max(precio) from producto) ;
+
+
+/*26. Devuelve una lista de todos los productos del fabricante Lenovo.*/
+	select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre = 'Lenovo'; 
+	
+/*27. Devuelve una lista de todos los productos del fabricante Crucial que tengan un precio mayor que 200 €.*/
+	select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre = 'Crucial' and p.precio > 200;
+
+/*28. Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packardy Seagate. Sin utilizar el operador IN.*/
+	select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre = 'Asus' or f.nombre = 'Hewlett-Packard' or f.nombre = 'Seagate';
+
+/*29. Devuelve un listado con todos los productos de los fabricantes Asus, Hewlett-Packardy Seagate. Usando el operador IN. */
+	select p.*, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre in('Asus','Hewlett-Packard', 'Seagate') ;
+
+/*30. Devuelve un listado con el nombre y el precio de todos los productos de los fabricantes cuyo nombre acabe por la vocal e.*/
+	select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre like '%e';
+
+/*31. Devuelve un listado con el nombre y el precio de todos los productos cuyo nombre de fabricante contenga el carácter w en su nombre.*/
+	select p.nombre, p.precio, f.nombre from producto p inner join fabricante f on p.codigo_fabricante = f.codigo where f.nombre like '%e%';
 
 /*****************************/
 /* Base de datos Universidad */     
